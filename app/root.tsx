@@ -29,26 +29,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title>Super Money</title>
+        <Meta />
+        <Links />
       </head>
       <body>
-        <div className="flex-1 flex flex-col items-center gap-16 min-h-0">
-          <header className="w-full">
-            <div className="w-full max-w-[100vw] p-4">
-              <img
-                src="https://super.money/img/super-money-logo-color.svg"
-                alt="React Router"
-                className="w-40 dark:hidden"
-              />
-            </div>
-          </header>
-          <div className="w-full px-4">
-          {children}
+        {children}
         <ScrollRestoration />
         <Scripts />
-          </div>
-        </div>
-        
       </body>
     </html>
   );
