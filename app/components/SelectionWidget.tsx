@@ -22,6 +22,7 @@ interface SelectionWidgetProps {
   handleClearCategory: () => void;
   availableInstruments: string[];
   setSelectedInstruments: (instruments: string[]) => void;
+  handleClearAll: () => void;
   handleContinue: () => void;
   onClose: () => void;
 }
@@ -44,6 +45,7 @@ export function SelectionWidget({
   handleClearCategory,
   availableInstruments,
   setSelectedInstruments,
+  handleClearAll,
   handleContinue,
   onClose,
 }: SelectionWidgetProps) {

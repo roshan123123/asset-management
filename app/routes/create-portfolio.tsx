@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, useMemo } from "react";
 import { useNavigate } from "react-router";
 import { SelectionWidget } from "../components/SelectionWidget";
 import { AllocationWidget } from "../components/AllocationWidget";
+import { Toast } from "../components/Toast";
 import { fetchAssets } from "../lib/api";
 import { ASSET_FILTER_HIERARCHY } from "../types/types";
 import { useDebounce } from "../hooks/useDebounce";
@@ -11,6 +12,17 @@ export default function SelectAssets() {
   const navigate = useNavigate();
 
   const [step, setStep] = useState<1 | 2>(1);
+  const [toast, setToast] = useState<{
+    message: string;
+    type: "success" | "error";
+  } | null>(null);
+
+  const showToast = useCallback(
+    (message: string, type: "success" | "error") => {
+      setToast({ message, type });
+    },
+    [],
+  );
 
   const [assets, setAssets] = useState<Asset[]>([]);
   const [selectedAssetIds, setSelectedAssetIds] = useState<Set<string>>(
@@ -119,7 +131,7 @@ export default function SelectAssets() {
         newSet.delete(assetId);
       } else {
         if (newSet.size >= 10) {
-          alert("You can select a maximum of 10 assets");
+          showToast("Cannot select more than 10 funds", "error");
           return prev;
         }
         newSet.add(assetId);
@@ -197,7 +209,7 @@ export default function SelectAssets() {
 
   const handleSubmit = () => {
     if (totalAllocation !== 100) {
-      alert("Total allocation must equal 100%");
+      showToast("Total allocation must equal 100%", "error");
       return;
     }
 
@@ -213,7 +225,8 @@ export default function SelectAssets() {
     );
 
     console.log("Allocation submitted:", allocationData);
-    alert("Allocation submitted successfully! Check console for details.");
+    console.log("Allocation submitted:", allocationData);
+    showToast("Submitted and logged", "success");
   };
 
   const handleBack = () => {
@@ -229,44 +242,51 @@ export default function SelectAssets() {
     [selectedAssets, allocations],
   );
 
-  if (step === 1) {
-    return (
-      <SelectionWidget
-        assets={assets}
-        selectedAssetIds={selectedAssetIds}
-        searchQuery={searchQuery}
-        setSearchQuery={setSearchQuery}
-        selectedCategory={selectedCategory}
-        selectedInstruments={selectedInstruments}
-        showInstrumentFilter={showInstrumentFilter}
-        setShowInstrumentFilter={setShowInstrumentFilter}
-        isLoading={isLoading}
-        totalCount={totalCount}
-        hasMore={hasMore}
-        handleViewMore={handleViewMore}
-        toggleAsset={toggleAsset}
-        handleCategoryChange={handleCategoryChange}
-        handleClearCategory={handleClearCategory}
-        availableInstruments={availableInstruments}
-        setSelectedInstruments={setSelectedInstruments}
-        handleClearAll={handleClearAll}
-        handleContinue={handleContinue}
-        onClose={handleClose}
-      />
-    );
-  } else if (step === 2) {
-    return (
-      <AllocationWidget
-        currentAssets={currentAssets}
-        allocations={allocations}
-        totalAllocation={totalAllocation}
-        minimumInvestment={minimumInvestment}
-        updateAllocation={updateAllocation}
-        removeAsset={removeAsset}
-        handleBack={handleBack}
-        handleSubmit={handleSubmit}
-        onClose={handleClose}
-      />
-    );
-  }
+  return (
+    <>
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
+      )}
+      {step === 1 ? (
+        <SelectionWidget
+          assets={assets}
+          selectedAssetIds={selectedAssetIds}
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+          selectedCategory={selectedCategory}
+          selectedInstruments={selectedInstruments}
+          showInstrumentFilter={showInstrumentFilter}
+          setShowInstrumentFilter={setShowInstrumentFilter}
+          isLoading={isLoading}
+          totalCount={totalCount}
+          hasMore={hasMore}
+          handleViewMore={handleViewMore}
+          toggleAsset={toggleAsset}
+          handleCategoryChange={handleCategoryChange}
+          handleClearCategory={handleClearCategory}
+          availableInstruments={availableInstruments}
+          setSelectedInstruments={setSelectedInstruments}
+          handleClearAll={handleClearAll}
+          handleContinue={handleContinue}
+          onClose={handleClose}
+        />
+      ) : (
+        <AllocationWidget
+          currentAssets={currentAssets}
+          allocations={allocations}
+          totalAllocation={totalAllocation}
+          minimumInvestment={minimumInvestment}
+          updateAllocation={updateAllocation}
+          removeAsset={removeAsset}
+          handleBack={handleBack}
+          handleSubmit={handleSubmit}
+          onClose={handleClose}
+        />
+      )}
+    </>
+  );
 }
