@@ -12,6 +12,11 @@ export default function SelectAssets() {
   const navigate = useNavigate();
 
   const [step, setStep] = useState<1 | 2>(1);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [step]);
+
   const [toast, setToast] = useState<{
     message: string;
     type: "success" | "error";
