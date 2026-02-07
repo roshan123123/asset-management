@@ -129,7 +129,15 @@ export function SelectionWidget({
       </div>
 
       <div
-        className={`px-4 space-y-3 ${isLoading ? "pb-32" : selectedAssetIds.size > 0 ? "pb-24" : "pb-6"}`}
+        className={`px-4 space-y-3 ${
+          assets.length === 0 && isLoading
+            ? "flex-1 flex items-center justify-center min-h-[50vh]"
+            : isLoading
+              ? "pb-32"
+              : selectedAssetIds.size > 0
+                ? "pb-24"
+                : "pb-6"
+        }`}
       >
         {assets.map((asset) => (
           <AssetCard
