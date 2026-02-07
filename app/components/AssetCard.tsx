@@ -75,7 +75,7 @@ export const AssetCard = memo(function AssetCard({
 
         <div className="flex-shrink-0 flex items-center">
           <div
-            className="w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all"
+            className="w-6 h-6 rounded-full border flex items-center justify-center transition-all"
             style={
               isSelected
                 ? { borderColor: "#137153", backgroundColor: "#137153" }
