@@ -102,10 +102,16 @@ export default function SelectAssets() {
   );
 
   useEffect(() => {
-    if (step === 1) {
+    if (step === 1 && assets.length === 0) {
       loadAssets(1);
     }
-  }, [debouncedQuery, selectedCategory, selectedInstruments, step]);
+  }, [
+    debouncedQuery,
+    selectedCategory,
+    selectedInstruments,
+    step,
+    assets.length,
+  ]);
 
   // Clean up selected assets when new data loads - remove items not in current results
   // IN CASE WE WANT THIS
