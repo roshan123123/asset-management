@@ -79,7 +79,7 @@ export function AllocationWidget({
                       onChange={(e) =>
                         updateAllocation(asset.id, e.target.value)
                       }
-                      className="w-28 pl-3 pr-8 py-2 bg-white border border-gray-300 text-sm text-right focus:outline-none focus:border-gray-400 transition-colors"
+                      className="w-28 pl-3 pr-8 py-2 bg-white border border-gray-300 text-base text-right focus:outline-none focus:border-gray-400 transition-colors"
                       style={{ borderRadius: "100px" }}
                       placeholder="0.00"
                     />
